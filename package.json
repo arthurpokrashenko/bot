@@ -1,7 +1,7 @@
 {
-  "name": "express-es6-rest-api",
-  "version": "0.2.2",
-  "description": "Starter project for an ES6 RESTful Express API",
+  "name": "Facebook Messenger Bot",
+  "version": "0.1",
+  "description": "Bot experiments",
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
@@ -9,9 +9,9 @@
   },
   "repository": {
     "type": "git",
-    "url": "git://github.com/developit/express-es6-rest-api.git"
+    "url": "git://github.com/arthurpokrashenko/bot.git"
   },
-  "author": "Jason Miller <jason@developit.ca>",
+  "author": "Arthur Pokrashenko <arthurpokrashenko@gmail.com>",
   "license": "Proprietary",
   "dependencies": {
     "babel": "^5.8.21",
@@ -19,6 +19,7 @@
     "compression": "^1.5.2",
     "cors": "^2.7.1",
     "express": "^4.13.3",
+    "request": "^2.71.0",
     "resource-router-middleware": "^0.5.1"
   }
 }

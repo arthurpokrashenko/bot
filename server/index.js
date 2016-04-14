@@ -28,7 +28,6 @@ db( λ => {
 	app.use('/api', api());
 
 	app.server.listen(process.env.PORT || 8080);
-
 	console.log(`Started on port ${app.server.address().port}`);
 });
 
