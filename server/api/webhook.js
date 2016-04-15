@@ -23,18 +23,36 @@ export default resource({
       let event = body.entry[0].messaging[i];
       let sender = event.sender.id;
       if (event.message && event.message.text) {
-        let text = event.message.text;
-        FaceMess.sendText(sender, 'Text sample');
-        // sendTextMessage(sender, "Text received, echo: "+ text.substring(0, 200));
+        let text = event.message.text.toLowerCase();
+
+        FaceMess.sendButtons(sender, 'Какая у вас квартира?', [
+          {
+            "type": "postback",
+            "payload": '1',
+            "title": "Однокомнатная"
+          },
+          {
+            "type": "postback",
+            "payload": '2',
+            "title": "Двухкомнатная"
+          },
+          {
+            "type": "postback",
+            "payload": '3',
+            "title": "Трехкомнатная"
+          }
+        ])
+        .then(function (data) {
+          console.log('buttons', data);
+        });
+      }
+      if (event.postback) {
+        let postback = event.postback;
+        console.log('postback', postback);
       }
     }
     res.sendStatus(200);
-  },
-
-  /** GET /:id - Return a given entity */
-  read({ params }, res) {
-    res.json(req.facet);
-  },
+  }
 
   // /** PUT /:id - Update a given entity */
   // update({ facet, body }, res) {

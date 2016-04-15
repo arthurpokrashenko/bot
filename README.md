@@ -1,16 +1,32 @@
-Facebook Messenger Bot
-==================================
+# FaceBot
+FaceBot is a Facebook Messenger Bot
+  
+# Example
+```javascript
+import { Router } from 'express';
+import http from 'http';
+import express from 'express';
+import FaceBot from '../lib/facebot.js';
 
+let app = express();
+let api = Router();
 
-# Run it
-PORT=8080 npm start
+let bot = new FaceBot({
+    token: '%FACEBOOK_PAGE_ACCESS_TOKEN%',
+    verify: '%FACEBOOK_WEBHOOK_TOKEN%'
+});
 
-# With nodemon:
-PORT=8080 nodemon
+bot.on('message', (payload, reply) => {
+    let text = payload.message.text
+    
+    reply('text', text, (err) => {
+      if (err) throw err
+    })
+});
+
+app.server = http.createServer(app);
+app.use('/webhook', bot.middleware());
+app.server.listen(8080);
 ```
 
 
-License
--------
-
-MIT

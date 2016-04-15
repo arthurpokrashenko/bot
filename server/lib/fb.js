@@ -1,35 +1,80 @@
 import request from 'request';
+import Promise from 'promise';
 import settings from '../settings/base.json';
-
+// https://developers.facebook.com/docs/messenger-platform/send-api-reference#guidelines
 class FaceMess {
   constructor() {
     this.token = settings.facebook_page_access_token;
   }
 
-  static sendMessage(sender, messageData) {
-    console.log(messageData);
-    request({
-      url: 'https://graph.facebook.com/v2.6/me/messages',
-      qs: { access_token: this.token },
-      method: 'POST',
-      json: {
-        recipient: { id: sender },
-        message: messageData,
-      }
-    }, function(error, response, body) {
-      if (error) {
-        console.log('Error sending message: ', error);
-      } else if (response.body.error) {
-        console.log('Error: ', response.body.error);
-      }
+  sendMessage(sender, messageData) {
+    return new Promise((resolve, reject) => {
+      request({
+        url: 'https://graph.facebook.com/v2.6/me/messages',
+        qs: { access_token: this.token },
+        method: 'POST',
+        json: {
+          recipient: { id: sender },
+          message: messageData,
+        }
+      }, (error, response, body) => {
+        if (error) {
+          return reject(error);
+        }
+        return resolve(body);
+      });
     });
-  }   
+  }
+
+  sendReceipt(sender, data) {
+    return this.sendMessage(sender, {
+      attachment: {
+        type: 'template',
+        payload: {
+          template_type: 'receipt',
+          ...data
+        }
+      }
+    })
+  }
+
+  sendGeneric(sender, elements) {
+    return this.sendMessage(sender, {
+      attachment: {
+        type: 'template',
+        payload: {
+          template_type: 'generic',
+          elements
+        }
+      }
+    })
+  }
+
+  sendButtons(sender, text, buttons) {
+    return this.sendMessage(sender, {
+      attachment: {
+        type: 'template',
+        payload: {
+          template_type: 'button',
+          text,
+          buttons
+        }
+      }
+    })
+  }
 
   sendText(sender, text) {
-    console.log('sendText');
-    super.sendMessage(sender, { text });
+    return this.sendMessage(sender, { text });
   }
- 
+
+  sendImage(sender, url) {
+    return this.sendMessage(sender, {
+      attachment: {
+        type: 'image',
+        payload: { url }
+      }
+    })
+  }
 }
 
 let fm = new FaceMess();
