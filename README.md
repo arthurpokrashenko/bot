@@ -1,6 +1,5 @@
-# FaceBot
-FaceBot is a Facebook Messenger Bot
-  
+Demo project, which illustrates FaceBot capabilities.
+
 # Example
 ```javascript
 import { Router } from 'express';
